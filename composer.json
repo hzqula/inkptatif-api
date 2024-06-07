@@ -1,0 +1,20 @@
+{
+  "name": "kelompok-1/inkptatif",
+  "description": "projek inkptatif",
+  "type": "project",
+  "license": "GNU",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "kelompok-2"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "firebase/php-jwt": "^6.10"
+  }
+}
