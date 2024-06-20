@@ -5,7 +5,7 @@ require_once '../koneksi.php';
 // Tambahkan header CORS
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 // Daftar parameter yang diizinkan
 $validParams = array('nip');
@@ -26,21 +26,21 @@ if (!empty($invalidParams)) {
     $statement = $connect->prepare("SELECT d.nama, d.nip,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', m.nama, 'nim', m.nim, 'kategori', kat.jenis))
-                                          FROM MAHASISWA m
-                                          JOIN DETAIL dt ON m.nim = dt.nim
-                                          JOIN KETERANGAN ket ON ket.id = dt.id_keterangan
-                                          JOIN KATEGORI kat ON kat.id = dt.id_kategori
+                                          FROM mahasiswa m
+                                          JOIN detail dt ON m.nim = dt.nim
+                                          JOIN keterangan ket ON ket.id = dt.id_keterangan
+                                          JOIN kategori kat ON kat.id = dt.id_kategori
                                           WHERE ket.id = 1 AND dt.nip = d.nip
                                         ) AS dibimbing,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', m.nama, 'nim', m.nim, 'kategori', kat.jenis))
-                                          FROM MAHASISWA m
-                                          JOIN DETAIL dt ON m.nim = dt.nim
-                                          JOIN KETERANGAN ket ON ket.id = dt.id_keterangan
-                                          JOIN KATEGORI kat ON kat.id = dt.id_kategori
+                                          FROM mahasiswa m
+                                          JOIN detail dt ON m.nim = dt.nim
+                                          JOIN keterangan ket ON ket.id = dt.id_keterangan
+                                          JOIN kategori kat ON kat.id = dt.id_kategori
                                           WHERE ket.id = 2 AND dt.nip = d.nip
                                         ) AS diuji
-                                        FROM DOSEN d WHERE d.nip LIKE :nipPattern
+                                        FROM dosen d WHERE d.nip LIKE :nipPattern
                                         ORDER BY d.nip");
     $statement->bindParam(":nipPattern", $nipPattern);
     $statement->execute();

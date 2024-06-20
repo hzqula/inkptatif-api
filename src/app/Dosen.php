@@ -47,7 +47,7 @@ class Dosen
     // Log data untuk debugging
     error_log("NIP: $nip, Password: $password");
 
-    $query = 'SELECT * FROM DOSEN WHERE nip = :nip';
+    $query = 'SELECT * FROM dosen WHERE nip = :nip';
     $statement = $this->connection->prepare($query);
     $statement->bindValue(':nip', $nip);
     $statement->execute();

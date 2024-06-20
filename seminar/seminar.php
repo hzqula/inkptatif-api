@@ -4,8 +4,8 @@ require_once '../koneksi.php';
 
 // Tambahkan header CORS
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 // Daftar parameter yang diizinkan
 $validParams = array('id', 'nama', 'nim');
@@ -28,20 +28,20 @@ if (!empty($invalidParams)) {
     $statement = $connect->prepare("SELECT s.id, s.judul, s.tempat, s.tanggal, m.nama AS nama, m.nim, kat.jenis AS kategori,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 1
                                         ) AS pembimbing,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 2
                                         ) AS penguji
-                                        FROM SEMINAR s
-                                        JOIN DETAIL dt ON dt.id_seminar = s.id
-                                        JOIN MAHASISWA m ON m.nim = dt.nim
-                                        JOIN KATEGORI kat ON kat.id = dt.id_kategori
+                                        FROM seminar s
+                                        JOIN detail dt ON dt.id_seminar = s.id
+                                        JOIN mahasiswa m ON m.nim = dt.nim
+                                        JOIN kategori kat ON kat.id = dt.id_kategori
                                         WHERE s.id LIKE :idPattern
                                         GROUP BY s.id, s.judul, m.nama, m.nim
                                         ORDER BY s.id");
@@ -64,20 +64,20 @@ if (!empty($invalidParams)) {
     $statement = $connect->prepare("SELECT s.id, s.judul, s.tempat, s.tanggal, m.nama AS nama, m.nim, kat.jenis AS kategori,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 1
                                         ) AS pembimbing,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 2
                                         ) AS penguji
-                                        FROM SEMINAR s
-                                        JOIN DETAIL dt ON dt.id_seminar = s.id
-                                        JOIN KATEGORI kat ON kat.id = dt.id_kategori
-                                        JOIN MAHASISWA m ON m.nim = dt.nim
+                                        FROM seminar s
+                                        JOIN detail dt ON dt.id_seminar = s.id
+                                        JOIN kategori kat ON kat.id = dt.id_kategori
+                                        JOIN mahasiswa m ON m.nim = dt.nim
                                         WHERE m.nama LIKE :namePattern
                                         GROUP BY s.id, s.judul, m.nama, m.nim
                                         ORDER BY s.id");
@@ -101,20 +101,20 @@ if (!empty($invalidParams)) {
     $statement = $connect->prepare("SELECT s.id, s.judul, s.tempat, s.tanggal, m.nama AS nama, m.nim, kat.jenis AS kategori,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 1
                                         ) AS pembimbing,
                                         (
                                           SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                          FROM DOSEN d
-                                          JOIN DETAIL dt ON d.nip = dt.nip
+                                          FROM dosen d
+                                          JOIN detail dt ON d.nip = dt.nip
                                           WHERE dt.id_seminar = s.id AND dt.id_keterangan = 2
                                         ) AS penguji
-                                        FROM SEMINAR s
-                                        JOIN DETAIL dt ON dt.id_seminar = s.id
-                                        JOIN KATEGORI kat ON kat.id = dt.id_kategori
-                                        JOIN MAHASISWA m ON m.nim = dt.nim
+                                        FROM seminar s
+                                        JOIN detail dt ON dt.id_seminar = s.id
+                                        JOIN kategori kat ON kat.id = dt.id_kategori
+                                        JOIN mahasiswa m ON m.nim = dt.nim
                                         WHERE m.nim LIKE :nimPattern
                                         GROUP BY s.id, s.judul, m.nama, m.nim
                                         ORDER BY s.id");
@@ -135,10 +135,10 @@ if (!empty($invalidParams)) {
   } else {
     // Tampilkan semua data seminar jika tidak ada parameter yang diberikan
     $statement = $connect->prepare("SELECT DISTINCT s.id, s.judul, s.tempat, s.tanggal, m.nama AS nama, m.nim, kat.jenis AS kategori
-                                    FROM SEMINAR s
-                                    JOIN DETAIL dt ON dt.id_seminar = s.id
-                                    JOIN MAHASISWA m ON m.nim = dt.nim
-                                    JOIN KATEGORI kat ON kat.id = dt.id_kategori
+                                    FROM seminar s
+                                    JOIN detail dt ON dt.id_seminar = s.id
+                                    JOIN mahasiswa m ON m.nim = dt.nim
+                                    JOIN kategori kat ON kat.id = dt.id_kategori
                                     ORDER BY s.id");
     $statement->execute();
     $data = $statement->fetchAll(PDO::FETCH_ASSOC);

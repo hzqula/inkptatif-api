@@ -8,8 +8,8 @@ use PDOException;
 class Database
 {
   protected string $host = 'localhost';
-  protected string $dbname = 'inkptatif_v1';
-  protected string $user = 'root';
+  protected string $dbname = 'u374195687_inkptatif';
+  protected string $user = 'u374195687_root';
   protected string $password = '@IlooqstrasiHZ0113';
 
   public function getConnection(): PDO

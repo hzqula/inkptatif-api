@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Content-Type: application/json');
 
 require_once '../koneksi.php';
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_keterangan = $input['id_keterangan'];
 
     // Persiapan pernyataan SQL
-    $stmt = $connect->prepare("INSERT INTO PENILAIAN (id_kriteria, id_kategori, id_keterangan, nip, nim, nilai) VALUES (:id_kriteria, :id_kategori, :id_keterangan, :nip, :nim, :nilai)");
+    $stmt = $connect->prepare("INSERT INTO penilaian (id_kriteria, id_kategori, id_keterangan, nip, nim, nilai) VALUES (:id_kriteria, :id_kategori, :id_keterangan, :nip, :nim, :nilai)");
 
     try {
       $connect->beginTransaction();

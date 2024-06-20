@@ -1,7 +1,7 @@
 <?php
 $host = 'localhost';
-$dbname = 'inkptatif_v1';
-$user = 'root';
+$dbname = 'u374195687_inkptatif';
+$user = 'u374195687_root';
 $passwrod = '@IlooqstrasiHZ0113';
 
 try {

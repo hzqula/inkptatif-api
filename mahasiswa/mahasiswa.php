@@ -5,7 +5,7 @@ require_once '../koneksi.php';
 // Tambahkan header CORS
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 // Daftar parameter yang diizinkan
 $validParams = array('nim');
@@ -26,19 +26,19 @@ if (!empty($invalidParams)) {
     $statement = $connect->prepare("SELECT m.nama, m.nim, kat.jenis AS kategori,
                                   (
                                   SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                  FROM DOSEN d
-                                  JOIN DETAIL dt ON d.nip = dt.nip
+                                  FROM dosen d
+                                  JOIN detail dt ON d.nip = dt.nip
                                   WHERE dt.nim = m.nim AND dt.id_keterangan = 1
                                   ) AS pembimbing,
                                   (
                                   SELECT JSON_ARRAYAGG(JSON_OBJECT('nama', d.nama, 'nip', d.nip))
-                                  FROM DOSEN d
-                                  JOIN DETAIL dt ON d.nip = dt.nip
+                                  FROM dosen d
+                                  JOIN detail dt ON d.nip = dt.nip
                                   WHERE dt.nim = m.nim AND dt.id_keterangan = 2
                                   ) AS penguji
-                                  FROM MAHASISWA m 
-                                  JOIN DETAIL dt ON dt.nim = m.nim
-                                  JOIN KATEGORI kat ON kat.id = dt.id_kategori
+                                  FROM mahasiswa m 
+                                  JOIN detail dt ON dt.nim = m.nim
+                                  JOIN kategori kat ON kat.id = dt.id_kategori
                                   WHERE m.nim LIKE :nimPattern
                                   GROUP BY m.nim, m.nama, kat.jenis
                                   ORDER BY m.nim");

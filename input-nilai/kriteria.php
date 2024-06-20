@@ -4,7 +4,7 @@ require_once '../koneksi.php';
 // Tambahkan header CORS
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Content-Type: application/json');
 
 try {
@@ -13,9 +13,9 @@ try {
   $jenis_keterangan = isset($_GET['jenis_keterangan']) ? $_GET['jenis_keterangan'] : "1";
 
   // Ambil data dari tabel KRITERIA
-  $stmt = $connect->prepare("SELECT k.id, k.penilaian FROM KRITERIA k
-                            JOIN KATEGORI kat ON kat.id = k.id_kategori
-                            JOIN KETERANGAN ket ON ket.id = k.id_keterangan 
+  $stmt = $connect->prepare("SELECT k.id, k.penilaian FROM kriteria k
+                            JOIN kategori kat ON kat.id = k.id_kategori
+                            JOIN keterangan ket ON ket.id = k.id_keterangan 
                             WHERE kat.jenis = :jenis_kategori AND ket.jenis = :jenis_keterangan");
 
   $stmt->bindParam(':jenis_kategori', $jenis_kategori);
